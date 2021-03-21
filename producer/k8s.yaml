@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: producer
+  name: producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: producer
+    spec:
+      containers:
+      - image: karlhopkinsonturrell/distributed-tracing-producer
+        name: distributed-tracing-producer
+        env:
+          - name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: DD_ENV
+            value: "test"
+          - name: DD_SERVICE
+            value: "producer"
+          - name: DD_VERSION
+            value: "0.0.1"
+          - name: DD_LOGS_INJECTION
+            value: "true"
+          - name: DD_TRACE_SAMPLE_RATE
+            value: "1"
+          - name: AWS_DEFAULT_REGION
+            value: "eu-west-1"
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: queue-access
+                key: aws_access_key_id
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: queue-access
+                key: aws_secret_access_key
+          - name: QUEUE_URL
+            valueFrom:
+              secretKeyRef:
+                name: queue-access
+                key: queue_url
+        resources: {}
+status: {}
