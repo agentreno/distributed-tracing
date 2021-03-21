@@ -14,6 +14,7 @@ data "aws_iam_policy_document" "queue_access" {
       type = "AWS"
       identifiers = [aws_iam_user.queue_user.arn]
     }
+    resources = [aws_sqs_queue.queue.arn]
   }
 }
 
