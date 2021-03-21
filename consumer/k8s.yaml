@@ -5,9 +5,6 @@ metadata:
   creationTimestamp: null
   labels:
     app: consumer
-    tags.datadoghq.com/env: "TEST"
-    tags.datadoghq.com/service: "consumer"
-    tags.datadoghq.com/version: "0.0.1"
   name: consumer
 spec:
   replicas: 1
@@ -30,17 +27,11 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: DD_ENV
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.labels['tags.datadoghq.com/env']
+            value: "test"
           - name: DD_SERVICE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.labels['tags.datadoghq.com/service']
+            value: "consumer"
           - name: DD_VERSION
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.labels['tags.datadoghq.com/version']
+            value: "0.0.1"
           - name: DD_LOGS_INJECTION
             value: "true"
           - name: DD_TRACE_SAMPLE_RATE
