@@ -1,9 +1,10 @@
 FROM python:3.9
 
-RUN pip install pipenv ddtrace
+RUN pip install ddtrace
 
-ADD Pipfile Pipfile.lock main.py ./
+ADD requirements.txt ./
+RUN pip install -r requirements.txt
 
-RUN pipenv install
+ADD main.py ./
 
-ENTRYPOINT ["pipenv", "run", "ddtrace-run", "python", "main.py"]
+ENTRYPOINT ["ddtrace-run", "python", "main.py"]
