@@ -7,7 +7,28 @@ from ddtrace import tracer
 import requests
 
 
+class ReceivedMessageFilter:
+    def process_trace(self, trace):
+        if any(span.resource == "sqs.deletemessage" for span in trace):
+            return trace
+
+        return None
+
+
+class LoggingFilter:
+    def process_trace(self, trace):
+        for span in trace:
+            logging.info(span.name)
+            logging.info(span.service)
+            logging.info(span.resource)
+
+        return trace
+
+
 client = boto3.client("sqs")
+tracer.configure(settings={
+    "FILTERS": [ReceivedMessageFilter()]
+})
 
 
 @tracer.wrap("queue.poll")
