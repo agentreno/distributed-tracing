@@ -8,7 +8,7 @@ import requests
 
 @tracer.wrap("queue.poll")
 def poll_queue():
-    requests.get("https://google.com")
+    requests.get("https://www.google.com")
 
 
 def main():
