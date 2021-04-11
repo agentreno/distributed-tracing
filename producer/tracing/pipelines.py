@@ -1,11 +1,17 @@
-# -*- coding: utf-8 -*-
-
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+import boto3
+from ddtrace import tracer
 
 
-class TutorialPipeline:
+@tracer.wrap("producer.send")
+def send_to_queue(content):
+    client = boto3.client("sqs")
+    resp = client.send_message(
+        QueueUrl=os.environ.get("QUEUE_URL"),
+        MessageBody=content,
+    )
+
+
+class MainPipeline:
     def process_item(self, item, spider):
+        send_to_queue(item.content)
         return item
