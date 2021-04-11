@@ -5,7 +5,10 @@ import time
 
 import boto3
 from ddtrace import tracer, context
-import requests
+from prometheus_client import start_http_server, Counter
+
+
+QUEUE_POLL_COUNT = Counter("queue_poll_count", "SQS Queue poll counter")
 
 
 class ProcessMessageFilter:
@@ -58,6 +61,7 @@ tracer.configure(settings={
 
 @tracer.wrap("consumer.poll")
 def poll_queue():
+    QUEUE_POLL_COUNT.inc()
     resp = client.receive_message(
         QueueUrl=os.environ.get("QUEUE_URL"),
         MessageAttributeNames=["All"],
@@ -91,4 +95,7 @@ def main():
 
 
 if __name__ == "__main__":
+    # Prometheus metrics server
+    start_http_server(8000)
+
     main()

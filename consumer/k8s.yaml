@@ -31,6 +31,9 @@ spec:
       containers:
       - image: karlhopkinsonturrell/distributed-tracing-consumer
         name: distributed-tracing-consumer
+        ports:
+          - containerPort: 8000
+            name: metrics
         env:
           - name: DD_AGENT_HOST
             valueFrom:
