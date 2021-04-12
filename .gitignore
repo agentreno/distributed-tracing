@@ -3,3 +3,4 @@
 terraform.tfstate*
 kube-prometheus/
 __pycache__/
+.DS_Store

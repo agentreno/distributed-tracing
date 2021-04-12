@@ -2,9 +2,12 @@ FROM python:3.9
 
 RUN pip install ddtrace
 
+RUN mkdir -p /srv/app
+
 ADD requirements.txt ./
 RUN pip install -r requirements.txt
 
-ADD main.py ./
+WORKDIR /srv/app
+ADD . /srv/app
 
-ENTRYPOINT ["ddtrace-run", "python", "main.py"]
+ENTRYPOINT ["ddtrace-run", "scrapy", "crawl", "main"]
