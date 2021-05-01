@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eventapi
+  name: eventapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventapi
+  template:
+    metadata:
+      labels:
+        app: eventapi
+    spec:
+      containers:
+      - image: karlhopkinsonturrell/distributed-tracing-api
+        name: distributed-tracing-api
