@@ -15,5 +15,5 @@ spec:
         app: eventapi
     spec:
       containers:
-      - image: karlhopkinsonturrell/distributed-tracing-api
+      - image: karlhopkinsonturrell/distributed-tracing-api:0.0.0 # {"$imagepolicy": "flux-system:eventapi"}
         name: distributed-tracing-api
