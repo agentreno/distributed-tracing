@@ -15,13 +15,12 @@ class MainSpider(scrapy.Spider):
     def start_requests(self):
         urls = [
             "http://quotes.toscrape.com/page/1/",
+            "http://quotes.toscrape.com/page/2/",
         ]
-        with tracer.start_span("producer.start_requests") as span:
-            for url in urls:
-                yield scrapy.Request(
-                    url=url, callback=self.parse, cb_kwargs={"span": span}
-                )
+        for url in urls:
+            yield scrapy.Request(url=url, callback=self.parse)
 
-    def parse(self, response, span):
-        with tracer.start_span("producer.parse", child_of=span):
-            return {"content": "test", "span": span}
+    def parse(self, response):
+        for quote in response.css("div.quote"):
+            with tracer.start_span("producer.parse") as span:
+                return {"content": quote.css("span.text::text").get(), "span": span}
