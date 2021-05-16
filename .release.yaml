@@ -1,0 +1,3 @@
+manifests:
+- old_producer/k8s.yaml
+- consumer/k8s.yaml
