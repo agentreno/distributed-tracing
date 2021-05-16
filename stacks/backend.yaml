@@ -1,0 +1,17 @@
+defaults: &defaults
+  provider_vars_dirs:
+    - ../providers/
+  kapp_vars_dirs:
+    - ../kapp-vars/
+  template_dirs:
+    - ../templates/
+
+eks-backend:
+  <<: *defaults
+  name: eks-backend
+  provider: aws
+  provisioner: eks
+  account: personal
+  region: eu-west-1
+  profile: personal
+  cluster: distributed-tracing-example
